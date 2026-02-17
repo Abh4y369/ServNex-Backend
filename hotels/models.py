@@ -21,9 +21,9 @@ class HotelDataModel(models.Model):
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     area = models.CharField(max_length=100)
-    badge = models.CharField(max_length=50, choices=BADGE_CHOICES)
+    badge = models.CharField(max_length=50, choices=BADGE_CHOICES, null=True, blank=True)
     
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     old_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
     # [NEW] Field to track how many rooms exist for this hotel entry
@@ -34,14 +34,30 @@ class HotelDataModel(models.Model):
 
     description = models.TextField()
     amenities = models.TextField(null=True, blank=True)
-    image = models.ImageField(upload_to='hotels/')
+    image = models.ImageField(upload_to='hotels/', blank=True, null=True)
     room_image1 = models.ImageField(upload_to='hotels/rooms/', blank=True, null=True)
     room_image2 = models.ImageField(upload_to='hotels/rooms/', blank=True, null=True)
     environment_image = models.ImageField(upload_to='hotels/environment/', blank=True, null=True)
 
     def __str__(self):
         return self.name
-
+    
+class Room(models.Model):
+    hotel = models.ForeignKey(HotelDataModel, on_delete=models.CASCADE, related_name='rooms')
+    room_type = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    adults = models.PositiveIntegerField(default=1)
+    children = models.PositiveIntegerField(default=0)
+    total_rooms = models.PositiveIntegerField(default=1)
+    bed_type = models.CharField(max_length=50, null=True, blank=True)
+    room_size = models.CharField(max_length=50, null=True, blank=True)
+    amenities = models.TextField(null=True, blank=True, help_text="Comma separated list of amenities")
+    description = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to='hotels/rooms/', null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.room_type} - {self.hotel.name}"
+    
 
 # [NEW] Booking Model for handling reservations
 class Booking(models.Model):

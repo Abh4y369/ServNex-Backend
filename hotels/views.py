@@ -6,12 +6,14 @@ from rest_framework.generics import ListAPIView
 from rest_framework.decorators import action
 from rest_framework import status
 
-from .models import HotelDataModel, Booking # Import Booking
+from .models import HotelDataModel, Booking, Room # Import Booking
 from django.db.models import Q # Import Q
 from .serializers import (
     HotelCreateSerializer, 
     HotelListSerializer, 
-    BookingSerializer # Import BookingSerializer
+    BookingSerializer, # Import BookingSerializer
+    RoomSerializer
+
 )
 
 class HotelListAPIView(ListAPIView):

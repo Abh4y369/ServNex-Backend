@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HotelDataModel, Booking  # Import Booking
+from .models import HotelDataModel, Booking, Room  # Import Booking
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -132,3 +132,8 @@ class BookingSerializer(serializers.ModelSerializer):
                 )
 
         return data
+    
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = '__all__'
